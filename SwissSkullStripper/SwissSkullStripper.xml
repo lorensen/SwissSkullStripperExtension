@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<executable>
+  <category>Skull Stripping</category>
+  <title>Swiss Skull Stripper</title>
+  <description><![CDATA[This is a CLI module (based on SwissSkullStripper) bundled in an extension]]></description>
+  <version>0.0.1</version>
+  <documentation-url>http://www.slicer.org/slicerWiki/index.php/Documentation/4.2/Modules/MyFooExtension</documentation-url>
+  <license>Slicer</license>
+  <contributor>Bill Lorensen (Noware)</contributor>
+  <acknowledgements>This work is based on blah blah</acknowledgements>
+  <parameters>
+    <label>Atlas</label>
+    <description><![CDATA[Atlas MRI and Atlas Mask]]></description>
+    <image>
+      <name>atlasMRIVolume</name>
+      <label>Atlas MRI</label>
+      <channel>input</channel>
+      <description><![CDATA[MRI Atlas Volume]]></description>
+      <longflag>atlasMRI</longflag>
+    </image>
+    <image type="label">
+      <name>atlasMaskVolume</name>
+      <label>Atlas Mask</label>
+      <channel>input</channel>
+      <description><![CDATA[MRI Mask Volume]]></description>
+      <longflag>atlasMask</longflag>
+    </image>
+  </parameters>
+  <parameters>
+    <label>Input</label>
+    <description><![CDATA[Input volumes]]></description>
+    <image>
+      <name>patientVolume</name>
+      <label>Patient Volume</label>
+      <channel>input</channel>
+      <index>0</index>
+      <description><![CDATA[MRI of patient]]></description>
+    </image>
+  </parameters>
+  <parameters>
+    <label>Output</label>
+    <image>
+      <name>patientOutputVolume</name>
+      <label>Patient Output Volume</label>
+      <channel>output</channel>
+      <index>1</index>
+      <description><![CDATA[The mask applied to the patient's volume]]></description>
+    </image>
+    <image type="label">
+      <name>patientMaskLabel</name>
+      <label>Patient Mask Label</label>
+      <channel>output</channel>
+      <index>2</index>
+      <description><![CDATA[Mask that contains the patient's brain]]></description>
+    </image>
+  </parameters>
+</executable>
