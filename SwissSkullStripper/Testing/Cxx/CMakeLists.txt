@@ -1,4 +1,3 @@
-
 #-----------------------------------------------------------------------------
 set(BASELINE ${CMAKE_CURRENT_SOURCE_DIR}/../../Data/Baseline)
 set(INPUT ${CMAKE_CURRENT_SOURCE_DIR}/../../Data/Input)
@@ -14,10 +13,12 @@ set_target_properties(${CLP}Test PROPERTIES LABELS ${CLP})
 #-----------------------------------------------------------------------------
 set(testname ${CLP}Test)
 ExternalData_add_test(${CLP}Data NAME ${testname} COMMAND ${SEM_LAUNCH_COMMAND} $<TARGET_FILE:${CLP}Test>
-  --compare DATA{${BASELINE}/${CLP}Test.nhdr,${CLP}Test.raw}
-  ${TEMP}/${CLP}Test.nhdr
+  --compare DATA{${BASELINE}/SwissSkullStripperMaskTest.mha}
+  ${TEMP}/SwissSkullStripperMask.mha
   ModuleEntryPoint
-  --sigma 2.5 DATA{${INPUT}/CTHeadAxial.nhdr,CTHeadAxial.raw.gz} ${TEMP}/${CLP}Test.nhdr
+  --atlasMRI DATA{${INPUT}/atlasImage.mha} --atlasMask DATA{${INPUT}/atlasMask.mha}
+  DATA{${INPUT}/RegLib_C01_MRMeningioma_1.nrrd}
+  ${TEMP}/SwissSkullStripperImage.mha  ${TEMP}/SwissSkullStripperMaskTest.mha
   )
 set_property(TEST ${testname} PROPERTY LABELS ${CLP})
 
