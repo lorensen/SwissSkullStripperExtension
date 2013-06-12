@@ -53,33 +53,33 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   m_Progress->ResetProgress();
   m_Progress->SetMiniPipelineFilter(this);
 
-  m_Timer.Start("DownsampleImage");
+  m_Timer.Start("1 DownsampleImage");
   this->DownsampleImage();
-  m_Timer.Stop("DownsampleImage");
+  m_Timer.Stop("1 DownsampleImage");
 
-  m_Timer.Start("RescaleImages");
+  m_Timer.Start("2 RescaleImages");
   this->RescaleImages();
-  m_Timer.Stop("RescaleImages");
+  m_Timer.Stop("2 RescaleImages");
 
-  m_Timer.Start("RigidRegistration");
+  m_Timer.Start("3 RigidRegistration");
   this->RigidRegistration();
-  m_Timer.Stop("RigidRegistration");
+  m_Timer.Stop("3 RigidRegistration");
 
-  m_Timer.Start("AffineRegistration");
+  m_Timer.Start("4 AffineRegistration");
   this->AffineRegistration();
-  m_Timer.Stop("AffineRegistration");
+  m_Timer.Stop("4 AffineRegistration");
 
-  m_Timer.Start("BinaryErosion");
+  m_Timer.Start("5 BinaryErosion");
   this->BinaryErosion();
-  m_Timer.Stop("BinaryErosion");
+  m_Timer.Stop("5 BinaryErosion");
 
-  m_Timer.Start("MultiResLevelSet");
+  m_Timer.Start("6 MultiResLevelSet");
   this->MultiResLevelSet();
-  m_Timer.Stop("MultiResLevelSet");
+  m_Timer.Stop("6 MultiResLevelSet");
 
-  m_Timer.Start("UpsampleLabels");
+  m_Timer.Start("7 UpsampleLabels");
   this->UpsampleLabels();
-  m_Timer.Stop("UpsampleLabels");
+  m_Timer.Stop("7 UpsampleLabels");
 
   m_Timer.Report();
 
@@ -220,7 +220,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 {
   // perform intial rigid alignment of atlas with patient image
 
-  std::cout << "Doing initial rigid mask alignment" << std::endl;
+//  std::cout << "Doing initial rigid mask alignment" << std::endl;
 
   typedef itk::VersorRigid3DTransform<double> TransformType;
   typedef itk::VersorRigid3DTransformOptimizer OptimizerType;
@@ -383,7 +383,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 {
   // perform refined affine alignment of atlas with patient image
 
-  std::cout << "Doing affine mask alignment" << std::endl;
+//  std::cout << "Doing affine mask alignment" << std::endl;
 
   typedef itk::AffineTransform<double,3> TransformType;
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
@@ -530,7 +530,7 @@ template <class TImageType, class TAtlasImageType, class TAtlasLabelType>
 void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 ::BinaryErosion()
 {
-  std::cout << "Eroding aligned mask" << std::endl;
+//  std::cout << "Eroding aligned mask" << std::endl;
 
   // make sure mask is binary
   itk::ImageRegionIterator<AtlasLabelType> iterLabel(m_AtlasLabels, m_AtlasLabels->GetLargestPossibleRegion() );
@@ -580,15 +580,15 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 {
   // level set refinement of brain mask in two resolution levels
 
-  std::cout << "Level set refinement of brain mask" << std::endl;
+//  std::cout << "Level set refinement of brain mask" << std::endl;
 
   // coarse (2mm isotropic resolution)
-  std::cout << "...coarse" << std::endl;
+//  std::cout << "...coarse" << std::endl;
   PyramidFilter(2);
   LevelSetRefinement(2);
 
   // fine (1mm isotropic resolution)
-  std::cout << "...fine" << std::endl;
+//  std::cout << "...fine" << std::endl;
   PyramidFilter(1);
   LevelSetRefinement(1);
 }
@@ -820,7 +820,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 {
   // upsample atlas label image to original resolution
 
-  std::cout << "Generating final brain mask" << std::endl;
+//  std::cout << "Generating final brain mask" << std::endl;
 
   typedef itk::ResampleImageFilter<TAtlasLabelType, TAtlasLabelType> ResamplerType;
   typename ResamplerType::Pointer resampler = ResamplerType::New();
