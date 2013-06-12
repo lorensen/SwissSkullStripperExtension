@@ -65,23 +65,8 @@ int DoIt( int argc, char* argv[], T )
 
   try
     {
-    itk::PluginFilterWatcher watchPreader(patientReader,
-                                          "Read patient volume",
-                                          CLPProcessInformation,
-                                          1.0 / 5.0,
-                                          0.0);
     patientReader->Update();
-    itk::PluginFilterWatcher watchAreader(atlasReader,
-                                          "Read atlas",
-                                          CLPProcessInformation,
-                                          1.0 / 5.0,
-                                          1.0 / 5.0);
     atlasReader->Update();
-    itk::PluginFilterWatcher watchLreader(labelReader,
-                                          "Read atl;as mask",
-                                          CLPProcessInformation,
-                                          1.0 / 5.0,
-                                          2.0 / 5.0);
     labelReader->Update();
     }
   catch ( itk::ExceptionObject &exception )
@@ -108,9 +93,7 @@ int DoIt( int argc, char* argv[], T )
     {
     itk::PluginFilterWatcher watchStripper(stripTsFilter,
                                            "Strip skull",
-                                           CLPProcessInformation,
-                                           1.0 / 5.0,
-                                           4.0 / 5.0);
+                                           CLPProcessInformation);
     stripTsFilter->Update();
     }
   catch ( itk::ExceptionObject &exception )
@@ -131,11 +114,6 @@ int DoIt( int argc, char* argv[], T )
 
   try
     {
-    itk::PluginFilterWatcher watchLreader(maskFilter,
-                                          "Mask patient volume",
-                                          CLPProcessInformation,
-                                          1.0 / 5.0,
-                                          5.0 / 5.0);
     maskFilter->Update();
     }
   catch ( itk::ExceptionObject &exception )

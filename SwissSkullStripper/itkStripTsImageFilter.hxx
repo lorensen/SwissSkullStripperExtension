@@ -34,6 +34,13 @@ StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   m_PatientImage = ImageType::New();
   m_AtlasImage = AtlasImageType::New();
   m_AtlasLabels = AtlasLabelType::New();
+  m_Progress = ProgressAccumulator::New();
+}
+
+template <class TImageType, class TAtlasImageType, class TAtlasLabelType>
+StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
+::~StripTsImageFilter()
+{
 }
 
 
@@ -43,16 +50,38 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 {
   // do the processing
 
+  m_Progress->ResetProgress();
+  m_Progress->SetMiniPipelineFilter(this);
+
+  m_Timer.Start("DownsampleImage");
   this->DownsampleImage();
+  m_Timer.Stop("DownsampleImage");
+
+  m_Timer.Start("RescaleImages");
   this->RescaleImages();
+  m_Timer.Stop("RescaleImages");
 
+  m_Timer.Start("RigidRegistration");
   this->RigidRegistration();
+  m_Timer.Stop("RigidRegistration");
+
+  m_Timer.Start("AffineRegistration");
   this->AffineRegistration();
+  m_Timer.Stop("AffineRegistration");
+
+  m_Timer.Start("BinaryErosion");
   this->BinaryErosion();
+  m_Timer.Stop("BinaryErosion");
 
+  m_Timer.Start("MultiResLevelSet");
   this->MultiResLevelSet();
+  m_Timer.Stop("MultiResLevelSet");
 
+  m_Timer.Start("UpsampleLabels");
   this->UpsampleLabels();
+  m_Timer.Stop("UpsampleLabels");
+
+  m_Timer.Report();
 
   this->GraftOutput(m_AtlasLabels );
 }
@@ -131,6 +160,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(resampler, 0.004f);
     resampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -166,6 +196,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(atlasRescaler, 0.001f);
     imageRescaler->Update();
     atlasRescaler->Update();
     }
@@ -270,6 +301,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(registration, 0.29f);
     registration->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -303,6 +335,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   imageResampler->SetInput( m_AtlasImage );
   try
     {
+    m_Progress->RegisterInternalFilter(imageResampler, 0.24f);
     imageResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -330,6 +363,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   labelResampler->SetInput( m_AtlasLabels );
   try
     {
+    m_Progress->RegisterInternalFilter(labelResampler, 0.01f);
     labelResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -416,6 +450,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(registration, 0.24f);
     registration->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -449,6 +484,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   imageResampler->SetInput( m_AtlasImage );
   try
     {
+    m_Progress->RegisterInternalFilter(imageResampler, 0.01f);
     imageResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -476,6 +512,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   labelResampler->SetInput( m_AtlasLabels );
   try
     {
+    m_Progress->RegisterInternalFilter(labelResampler, 0.01f);
     labelResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -523,6 +560,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(eroder, 0.02f);
     eroder->Update();
     }
   catch( itk::ExceptionObject &err )
@@ -595,6 +633,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(imageResampler, 0.01f);
     imageResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -630,6 +669,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(labelResampler, 0.01f);
     labelResampler->Update();
     }
   catch( itk::ExceptionObject &exception )
@@ -744,6 +784,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   thresholder->SetInput( geodesicActiveContour->GetOutput() );
   try
     {
+    m_Progress->RegisterInternalFilter(thresholder, 0.01f);
     thresholder->Update();
     }
   catch( itk::ExceptionObject & excep )
@@ -804,6 +845,7 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
 
   try
     {
+    m_Progress->RegisterInternalFilter(resampler, 0.01f);
     resampler->Update();
     }
   catch( itk::ExceptionObject &exception )

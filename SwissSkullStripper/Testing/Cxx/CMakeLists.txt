@@ -14,7 +14,7 @@ set_target_properties(${CLP}Test PROPERTIES LABELS ${CLP})
 set(testname ${CLP}Test)
 ExternalData_add_test(${CLP}Data NAME ${testname} COMMAND ${SEM_LAUNCH_COMMAND} $<TARGET_FILE:${CLP}Test>
   --compare DATA{${BASELINE}/SwissSkullStripperMaskTest.mha}
-  ${TEMP}/SwissSkullStripperMask.mha
+  ${TEMP}/SwissSkullStripperMaskTest.mha
   ModuleEntryPoint
   --atlasMRI DATA{${INPUT}/atlasImage.mha} --atlasMask DATA{${INPUT}/atlasMask.mha}
   DATA{${INPUT}/RegLib_C01_MRMeningioma_1.nrrd}
