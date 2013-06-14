@@ -95,6 +95,7 @@ int DoIt( int argc, char* argv[], T )
                                            "Strip skull",
                                            CLPProcessInformation);
     stripTsFilter->Update();
+    std::cout << stripTsFilter->GetTimerReport();
     }
   catch ( itk::ExceptionObject &exception )
     {
@@ -168,7 +169,6 @@ int main( int argc, char * argv[] )
     // signed types
     switch( componentType )
       {
-#if 0
       case itk::ImageIOBase::UCHAR:
         return DoIt( argc, argv, static_cast<unsigned char>(0) );
         break;
@@ -178,11 +178,9 @@ int main( int argc, char * argv[] )
       case itk::ImageIOBase::USHORT:
         return DoIt( argc, argv, static_cast<unsigned short>(0) );
         break;
-#endif
       case itk::ImageIOBase::SHORT:
         return DoIt( argc, argv, static_cast<short>(0) );
         break;
-#if 0
       case itk::ImageIOBase::UINT:
         return DoIt( argc, argv, static_cast<unsigned int>(0) );
         break;
@@ -201,7 +199,6 @@ int main( int argc, char * argv[] )
       case itk::ImageIOBase::DOUBLE:
         return DoIt( argc, argv, static_cast<double>(0) );
         break;
-#endif
       case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
       default:
         std::cerr << argv[0] << "unknown component type" << std::endl;

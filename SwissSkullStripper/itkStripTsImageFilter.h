@@ -127,6 +127,10 @@ public:
   void SetAtlasImage( const TAtlasImageType * ptr );
   void SetAtlasBrainMask( const TAtlasLabelType * ptr );
 
+  const std::string &GetTimerReport() const
+  {
+    return m_TimerReport;
+  }
 
 protected:
 
@@ -147,6 +151,7 @@ private:
   AtlasLabelPointer       m_AtlasLabels;
   ProgressPointer         m_Progress;
   TimeProbesCollectorBase m_Timer;
+  std::string             m_TimerReport;
 
   void RescaleImages();
   void DownsampleImage();

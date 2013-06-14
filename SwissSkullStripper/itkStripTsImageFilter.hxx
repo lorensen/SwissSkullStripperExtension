@@ -35,6 +35,7 @@ StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   m_AtlasImage = AtlasImageType::New();
   m_AtlasLabels = AtlasLabelType::New();
   m_Progress = ProgressAccumulator::New();
+  m_TimerReport = "";
 }
 
 template <class TImageType, class TAtlasImageType, class TAtlasLabelType>
@@ -81,7 +82,10 @@ void StripTsImageFilter<TImageType, TAtlasImageType, TAtlasLabelType>
   this->UpsampleLabels();
   m_Timer.Stop("7 UpsampleLabels");
 
-  m_Timer.Report();
+  std::ostringstream report;
+
+  m_Timer.Report(report);
+  m_TimerReport = report.str();
 
   this->GraftOutput(m_AtlasLabels );
 }

@@ -4,11 +4,12 @@ project(SwissSkullStripper)
 
 #-----------------------------------------------------------------------------
 set(EXTENSION_HOMEPAGE "http://www.slicer.org/slicerWiki/index.php/Documentation/Nightly/Extensions/SwissSkullStripper")
-set(EXTENSION_CATEGORY "Examples")
-set(EXTENSION_CONTRIBUTORS "Jean-Christophe Fillion-Robin (Kitware)")
-set(EXTENSION_DESCRIPTION "This is an example of extension bundling one CLI module")
-set(EXTENSION_ICONURL "http://viewvc.slicer.org/viewvc.cgi/Slicer4/trunk/Extensions/Testing/SwissSkullStripper/SwissSkullStripper.png?revision=21745&view=co")
+set(EXTENSION_CATEGORY "Segmentation")
+set(EXTENSION_CONTRIBUTORS "Bill Lorensen (Noware), Stefan Bauer (University of Bern), Thomas Fejes (University of Bern), Mauricio Reyes (University of Bern), Arnaud Gelas (Crisalix)")
+set(EXTENSION_DESCRIPTION "A skull-stripping filter that registers an atlas image to the patient data. An atlas brain mask is propagated to the patient data. This brain mask is eroded and then serves as initialization for a refined brain extraction based on level-sets. The level-set is evolved towards the edge of the brain-skull border with dedicated expansion, curvature and advection terms.")
+set(EXTENSION_ICONURL "https://github.com/lorensen/SwissSkullStripperExtension/blob/master/SwissSkullStripper.pnghttps://github.com/lorensen/SwissSkullStripperExtension/blob/master/SwissSkullStripper.png")
 set(EXTENSION_SCREENSHOTURLS "http://wiki.slicer.org/slicerWiki/images/a/ab/Slicer-r19441-SwissSkullStripper-screenshot.png http://wiki.slicer.org/slicerWiki/images/1/1e/Slicer-r19441-SwissSkullStripper-screenshot-2.png")
+set(EXTENSION_STATUS "work-in-progress")
 
 #-----------------------------------------------------------------------------
 find_package(Slicer REQUIRED)
