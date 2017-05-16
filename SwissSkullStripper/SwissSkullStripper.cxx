@@ -38,6 +38,8 @@ stefan.bauer@istb.unibe.ch
 
 #include "SwissSkullStripperCLP.h"
 
+#include <itksys/SystemTools.hxx>
+
 template <class T>
 int DoIt( int argc, char* argv[], T )
 {
@@ -60,20 +62,55 @@ int DoIt( int argc, char* argv[], T )
   typename LabelReaderType::Pointer labelReader = LabelReaderType::New();
 
   patientReader->SetFileName( patientVolume );
+
+  // If user doesn't specify atlas then use default atlas files
+  if (atlasMRIVolume.empty() && atlasMaskVolume.empty())
+    {
+    std::vector<std::string> paths;
+    std::string processExePath;
+    std::string errorMsg;
+    if (itksys::SystemTools::FindProgramPath(argv[0], processExePath, errorMsg))
+      {
+      paths.push_back(itksys::SystemTools::GetFilenamePath(processExePath)+"/SwissSkullStripperDefaultAtlas");
+      paths.push_back(itksys::SystemTools::GetParentDirectory(itksys::SystemTools::GetFilenamePath(processExePath))+"/SwissSkullStripperDefaultAtlas");
+      }
+    atlasMRIVolume = itksys::SystemTools::FindFile("atlasImage.mha", paths);
+    atlasMaskVolume = itksys::SystemTools::FindFile("atlasMask.mha", paths);
+    }
+
   atlasReader->SetFileName( atlasMRIVolume );
   labelReader->SetFileName( atlasMaskVolume );
 
   try
     {
     patientReader->Update();
-    atlasReader->Update();
-    labelReader->Update();
     }
   catch ( itk::ExceptionObject &exception )
     {
-    std::cerr << "Exception caught ! " << std::endl;
+    std::cerr << "Failed to read input patient volume." << std::endl;
     std::cerr << exception << std::endl;
+    return EXIT_FAILURE;
+    }
 
+  try
+    {
+    atlasReader->Update();
+    }
+  catch (itk::ExceptionObject &exception)
+    {
+    std::cerr << "Failed to read input atlas image volume." << std::endl;
+    std::cerr << exception << std::endl;
+    return EXIT_FAILURE;
+    }
+
+  try
+    {
+    labelReader->Update();
+    }
+  catch (itk::ExceptionObject &exception)
+    {
+    std::cerr << "Failed to read input atlas label volume." << std::endl;
+    std::cerr << exception << std::endl;
     return EXIT_FAILURE;
     }
 

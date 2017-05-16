@@ -68,3 +68,19 @@ if(BUILD_TESTING)
   add_subdirectory(Testing)
 endif()
 
+# Add default atlas files to binary directory and extension package
+
+set(DEFAULT_ATLAS_FILES
+  atlasImage.mha
+  atlasMask.mha
+  )
+
+foreach(DEFAULT_ATLAS_FILE ${DEFAULT_ATLAS_FILES})
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/Data/Input/${DEFAULT_ATLAS_FILE}
+    ${CMAKE_BINARY_DIR}/${Slicer_CLIMODULES_BIN_DIR}/SwissSkullStripperDefaultAtlas/${DEFAULT_ATLAS_FILE}
+    COPYONLY)
+  install(
+    FILES ${CMAKE_BINARY_DIR}/${Slicer_CLIMODULES_BIN_DIR}/${DEFAULT_ATLAS_FILE}
+    DESTINATION ${Slicer_INSTALL_CLIMODULES_BIN_DIR}/SwissSkullStripperDefaultAtlas COMPONENT Runtime)
+endforeach()

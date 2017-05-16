@@ -9,24 +9,6 @@
   <contributor>Bill Lorensen (Noware)</contributor>
   <acknowledgements>This work is based the Skull-Stripper Filter for ITK, Stefan Bauer, Thomas Fejes and Mauricio Reyes, Institute for Surgical Technology and Biomechanics, University of Bern, Switzerland</acknowledgements>
   <parameters>
-    <label>Atlas</label>
-    <description><![CDATA[Atlas and Atlas Mask]]></description>
-    <image>
-      <name>atlasMRIVolume</name>
-      <label>Atlas Volume</label>
-      <channel>input</channel>
-      <description><![CDATA[Atlas Volume. Usually an MRI of the head, but CT of the head may work.]]></description>
-      <longflag>atlasMRI</longflag>
-    </image>
-    <image type="label">
-      <name>atlasMaskVolume</name>
-      <label>Atlas Mask Volume</label>
-      <channel>input</channel>
-      <description><![CDATA[Atlas Mask Volume that masks the brain.]]></description>
-      <longflag>atlasMask</longflag>
-    </image>
-  </parameters>
-  <parameters>
     <label>Input</label>
     <description><![CDATA[Input volumes]]></description>
     <image>
@@ -52,6 +34,24 @@
       <channel>output</channel>
       <index>2</index>
       <description><![CDATA[The brain mask that contains the patient's brain]]></description>
+    </image>
+  </parameters>
+  <parameters advanced="true">
+    <label>Atlas</label>
+    <description><![CDATA[Atlas and Atlas Mask]]></description>
+    <image>
+      <name>atlasMRIVolume</name>
+      <label>Atlas Volume</label>
+      <channel>input</channel>
+      <description><![CDATA[Atlas Volume. Usually an MRI of the head, but CT of the head may work. If not specified, a default MRI atlas will be used.]]></description>
+      <longflag>atlasMRI</longflag>
+    </image>
+    <image type="label">
+      <name>atlasMaskVolume</name>
+      <label>Atlas Mask Volume</label>
+      <channel>input</channel>
+      <description><![CDATA[Atlas Mask Volume that masks the brain. If not specified, a default MRI atlas will be used.]]></description>
+      <longflag>atlasMask</longflag>
     </image>
   </parameters>
 </executable>
